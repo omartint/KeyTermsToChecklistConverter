@@ -23,17 +23,27 @@ namespace KeyTermsToChecklistConverter
 
         private void ConvertButton_Click(object sender, EventArgs e)
         {
+            string searchMode =  string.Empty;
+            if (SearchModeCombobox.Text == "Simple")
+            {
+                searchMode = "simple";
+            }
+            else
+            {
+                searchMode = "regexp";
+            }
+
+
             // get DateTime
             DateTime time = DateTime.Now;
             string format = "yyyy-MM-dd HH:mm";
             string datetime = time.ToString(format);
 
-            // declare variable to hold the category selection
+            //// declare variable to hold the category selection
             string category = CategoryTextBox.Text;
             if (category.Length > 0)
             {
-                category = Replacing(category);
-                category = category.Replace("&quot;&quot;", "&quot;").Replace(" | ", " or ").Replace("|", "");
+                category = category.Replace("\"\"", "\"").Replace(" | ", " or ").Replace("|", "");
             }
 
             // declare variable to get input file
@@ -79,8 +89,18 @@ namespace KeyTermsToChecklistConverter
                 return;
             }
 
+            bool KTMismatchMode;
+            if (KTMismatchCheckbox.Checked)
+            {
+                KTMismatchMode = true;
+            }
+            else
+            {
+                KTMismatchMode = false;
+            }
+
             // Read input File and add strings to list
-            List<string> list = SegmentList(InputFile, encoding);         
+            List<Entry> list = SegmentList(InputFile, encoding, category, KTMismatchMode);
 
             string OutputFile = directory + "\\" + filename + ".xbckl";
 
@@ -99,9 +119,10 @@ namespace KeyTermsToChecklistConverter
             }
 
             string name = Replacing(filename);
-            XmlTextWriter xmlWriter = new XmlTextWriter(OutputFile, null);
-
-            xmlWriter.Formatting = Formatting.Indented;
+            XmlTextWriter xmlWriter = new XmlTextWriter(OutputFile, null)
+            {
+                Formatting = Formatting.Indented
+            };
 
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement("xbench-checklist");
@@ -111,59 +132,25 @@ namespace KeyTermsToChecklistConverter
             xmlWriter.WriteAttributeString("name", name);
 
             int counter = 0;
-            foreach (string segment in list)
+            foreach (Entry segment in list)
             {
-                // Declare variable to hold the tags
-                string source = string.Empty;
-                string target = string.Empty;
-                string comment = string.Empty;
-                string description = string.Empty;
-                string checkname = string.Empty;
-                string quotmarks = string.Empty;
-                quotmarks = "&quot;";
-                string[] split = segment.Split('\t');
+                // Declare variable to hold the tags                
+                string source = segment.SourceTerm;
+                string target = segment.TargetTerm;
+                string description = segment.Description;
+                string checkname = segment.Checkname;
 
-                if (split[0].Length < 1 && split[1].Length < 1) continue;
+                if (source.Length < 1 && target.Length < 1) continue;
 
                 // Write checklist entry start element
-                xmlWriter.WriteStartElement("check");
-                // Add attribute strings to check tag.
-                if (split[0].Length > 0)
-                {
-                    string check = split[0].Replace(" | ", " or ").Replace("|", "");
-                    xmlWriter.WriteAttributeString("name", check.Replace("&gt;", ">").Replace("&lt;", "<").Replace("&apos;", "'"));
-                }
-                else if (split[1].Length > 0)
-                {
-                    string check = split[1].Replace(" | ", " or ").Replace("|", "");
-                    xmlWriter.WriteAttributeString("name", check.Replace("&gt;", ">").Replace("&lt;", "<").Replace("&apos;", "'"));
-                }
-            
-                xmlWriter.WriteAttributeString("categories", category.Replace("&gt;", ">").Replace("&lt;", "<").Replace("&apos;", "'"));
-
-                //Get source
-                source = SourceItem(split[0]);
-                
-                //Set bool to get key term mismatch mode
-                bool KTMismatchMode;
-                if (KTMismatchCheckbox.Checked)
-                {
-                    KTMismatchMode = true;
-                }
-                else
-                {
-                    KTMismatchMode = false;
-                }
-
-                // Get target string
-                target = TargetItem(split[1], split[0].Length, KTMismatchMode);
-                // Set description entry
-                description = SetDescriptionEntry(split[0], split[1], KTMismatchMode);
+                xmlWriter.WriteStartElement("check");                
+                xmlWriter.WriteAttributeString("name", checkname);
+                xmlWriter.WriteAttributeString("categories", category);
 
                 // Add source term and its parameters
-                SourceParms(xmlWriter, source);
+                SourceParms(xmlWriter, source, searchMode);
                 // Add target term and its parameters
-                TargetParms(xmlWriter, target);
+                TargetParms(xmlWriter, target, searchMode);
                 // Add description entry
                 Description(xmlWriter, description);
 
@@ -181,7 +168,6 @@ namespace KeyTermsToChecklistConverter
 
             // Convert string to UTF8 encoding and write to checklist.
             // closing end tags
-
             xmlWriter.WriteEndElement();
             xmlWriter.WriteEndElement();
             xmlWriter.WriteEndDocument();
@@ -194,31 +180,23 @@ namespace KeyTermsToChecklistConverter
             Process.Start("explorer.exe", "/select, \"" + OutputFile + "\"");
 
             InputFileTextBox.Clear();
-
         }
-
 
         static string RemoveUnnecessaryQuotes(string text)
         {
             string[] split = text.Split('\t');
             string source = split[0];
             string target = split[1];
+            // Check if source and target start and end with quotes
             if (source.Length > 2 && source.StartsWith("\"") && source.EndsWith("\""))
             {
-                source = source.TrimStart('\"').TrimEnd('\"');
-
-            }
-            else
-            {
-                source = split[0];
+                // Remove initial and final quotes
+                source = source.Substring(1, source.Length - 2);
             }
             if (target.Length > 2 && target.StartsWith("\"") && target.EndsWith("\""))
             {
-                target = target.TrimStart('\"').TrimEnd('\"');
-            }
-            else
-            {
-                target = split[1];
+                // Remove initial and final quotes
+                target = target.Substring(1, target.Length - 2);
             }
 
             return source + "\t" + target;
@@ -325,8 +303,7 @@ namespace KeyTermsToChecklistConverter
                 }
             }
             else
-            {
-                
+            {                
                 if (target.Length > 0)
                 {
                     desc = "Is &quot;" + target.Replace(" | ", "&quot; or &quot;").Replace("| ", "") + "&quot; correct? ";
@@ -337,22 +314,45 @@ namespace KeyTermsToChecklistConverter
                 }
             }
 
+            desc = desc.Replace("&quot;&quot;", "&quot;");
             return desc;
         }
 
         // Read file and add strings to list
-        static List<string> SegmentList(string file, Encoding encoding)
+         static List<Entry> SegmentList(string file, Encoding encoding, string category, bool KTMismatchMode)
         {
-            List<string> list = new List<string>();
+            List<Entry> list = new List<Entry>();
             string line;
+            string checkname = string.Empty;
+            string source;
+            string target;
+            string description;
+
             StreamReader reader = new StreamReader(file, encoding);
             while ((line = reader.ReadLine()) != null)
             {
-                string[] split = line.Split('\t');
-                if (split.Length < 2) continue;
                 line = RemoveUnnecessaryQuotes(line);
-                list.Add(Replacing(line)); // Add line to list and replace special characters               
+                string[] split = line.Split('\t');
+                if (split.Length < 2) continue;                
+
+                if (split[0].Length > 0)
+                {
+                    checkname = split[0];                    
+                }
+                else if (split[1].Length > 0)
+                {
+                    checkname = split[1];                    
+                }
+
+                checkname = checkname.Replace(" | ", " or ").Replace("|", "");
+                source = Replacing(split[0]);
+                source = SourceItem(source);
+                target = Replacing(split[1]);
+                target = TargetItem(target, source.Length, KTMismatchMode);
+                description = SetDescriptionEntry(Replacing(split[0]), Replacing(split[1]), KTMismatchMode);                
+                list.Add(new Entry { Checkname = checkname, Category = category, SourceTerm = source, TargetTerm = target, Description = description});
             }
+
             return list;
         }
 
@@ -360,7 +360,6 @@ namespace KeyTermsToChecklistConverter
         public static string Replacing(string input)
         {
             // replace special characters
-            
             input = input.Replace("&", "&amp;").Replace("'", "&apos;").Replace("\"", "&quot;&quot;").Replace(">", "&gt;").Replace("<", "&lt;");
             return input;
         }
@@ -403,20 +402,20 @@ namespace KeyTermsToChecklistConverter
         private void OpenFileButton_Click(object sender, EventArgs e)
         {
             //Create an instance of the open dialog box
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-
-            //Set filter options and filter index
-            openFileDialog1.Filter = "Unicode Tab-delimited Text File (.txt)|*.txt";
-            openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            openFileDialog1.Multiselect = false;
-            openFileDialog1.Title = "Select a Key Terms File";
+            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            {
+                //Set filter options and filter index
+                Filter = "Unicode Tab-delimited Text File (.txt)|*.txt",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Multiselect = false,
+                Title = "Select a Key Terms File"
+            };
 
             //ONce the dialog properties are set, it is ready to present the user
             if (openFileDialog1.ShowDialog() == DialogResult.OK) InputFileTextBox.Text = openFileDialog1.FileName;
-                
         }
 
-        public void SourceParms(XmlWriter xmlWriter, string SourceTerm)
+        public void SourceParms(XmlWriter xmlWriter, string SourceTerm, string searchMode)
         {
             xmlWriter.WriteStartElement("term");
             xmlWriter.WriteAttributeString("type", "source");
@@ -443,7 +442,7 @@ namespace KeyTermsToChecklistConverter
                 xmlWriter.WriteAttributeString("normalizeaccents", "yes");
             }
             xmlWriter.WriteAttributeString("powersearch", "yes");
-            xmlWriter.WriteAttributeString("searchmode", "simple");
+            xmlWriter.WriteAttributeString("searchmode", searchMode);
             
             if (SourceTerm == "&quot;&quot;")
             {
@@ -454,7 +453,7 @@ namespace KeyTermsToChecklistConverter
         }
 
 
-        public void TargetParms(XmlWriter xmlWriter, string TargetTerm)
+        public void TargetParms(XmlWriter xmlWriter, string TargetTerm, string searchMode)
         {
 
             xmlWriter.WriteStartElement("term");
@@ -482,7 +481,7 @@ namespace KeyTermsToChecklistConverter
                 xmlWriter.WriteAttributeString("normalizeaccents", "yes");
             }
             xmlWriter.WriteAttributeString("powersearch", "yes");
-            xmlWriter.WriteAttributeString("searchmode", "simple");           
+            xmlWriter.WriteAttributeString("searchmode", searchMode);           
             if (TargetTerm == "&quot;&quot;")
             {
                 TargetTerm = "";
@@ -498,5 +497,26 @@ namespace KeyTermsToChecklistConverter
             xmlWriter.WriteRaw(description);
             xmlWriter.WriteEndElement();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            SearchModeCombobox.SelectedItem = "Simple";
+        }
+
+
+
+        private void SearchModeCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+
+    class Entry
+    {
+        public string Checkname { get; set; }
+        public string SourceTerm { get; set; }
+        public string TargetTerm { get; set; }
+        public string Description { get; set; }
+        public string Category { get; set; }
     }
 }

@@ -49,6 +49,8 @@
             this.CategoryTextBox = new System.Windows.Forms.TextBox();
             this.CancelButton = new System.Windows.Forms.Button();
             this.ConvertButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.SearchModeCombobox = new System.Windows.Forms.ComboBox();
             this.SourceTermOptionsGroupBox.SuspendLayout();
             this.TargetTermOptions.SuspendLayout();
             this.SuspendLayout();
@@ -103,7 +105,7 @@
             this.SourceNoWhitespaceTrimming.AutoSize = true;
             this.SourceNoWhitespaceTrimming.Location = new System.Drawing.Point(5, 131);
             this.SourceNoWhitespaceTrimming.Name = "SourceNoWhitespaceTrimming";
-            this.SourceNoWhitespaceTrimming.Size = new System.Drawing.Size(144, 18);
+            this.SourceNoWhitespaceTrimming.Size = new System.Drawing.Size(165, 19);
             this.SourceNoWhitespaceTrimming.TabIndex = 0;
             this.SourceNoWhitespaceTrimming.Text = "No Whitespace Trimming";
             this.SourceNoWhitespaceTrimming.UseVisualStyleBackColor = true;
@@ -113,7 +115,7 @@
             this.SourceNormalizeNativeChars.AutoSize = true;
             this.SourceNormalizeNativeChars.Location = new System.Drawing.Point(5, 106);
             this.SourceNormalizeNativeChars.Name = "SourceNormalizeNativeChars";
-            this.SourceNormalizeNativeChars.Size = new System.Drawing.Size(159, 18);
+            this.SourceNormalizeNativeChars.Size = new System.Drawing.Size(182, 19);
             this.SourceNormalizeNativeChars.TabIndex = 0;
             this.SourceNormalizeNativeChars.Text = "Normalize Native Characters";
             this.SourceNormalizeNativeChars.UseVisualStyleBackColor = true;
@@ -123,7 +125,7 @@
             this.SourceNormalizeWhitespaces.AutoSize = true;
             this.SourceNormalizeWhitespaces.Location = new System.Drawing.Point(5, 81);
             this.SourceNormalizeWhitespaces.Name = "SourceNormalizeWhitespaces";
-            this.SourceNormalizeWhitespaces.Size = new System.Drawing.Size(136, 18);
+            this.SourceNormalizeWhitespaces.Size = new System.Drawing.Size(156, 19);
             this.SourceNormalizeWhitespaces.TabIndex = 0;
             this.SourceNormalizeWhitespaces.Text = "Normalize Whitespaces";
             this.SourceNormalizeWhitespaces.UseVisualStyleBackColor = true;
@@ -133,7 +135,7 @@
             this.SourceMatchWholeWord.AutoSize = true;
             this.SourceMatchWholeWord.Location = new System.Drawing.Point(5, 55);
             this.SourceMatchWholeWord.Name = "SourceMatchWholeWord";
-            this.SourceMatchWholeWord.Size = new System.Drawing.Size(114, 18);
+            this.SourceMatchWholeWord.Size = new System.Drawing.Size(130, 19);
             this.SourceMatchWholeWord.TabIndex = 0;
             this.SourceMatchWholeWord.Text = "Match Whole Word";
             this.SourceMatchWholeWord.UseVisualStyleBackColor = true;
@@ -143,7 +145,7 @@
             this.SourceCaseSensitive.AutoSize = true;
             this.SourceCaseSensitive.Location = new System.Drawing.Point(6, 30);
             this.SourceCaseSensitive.Name = "SourceCaseSensitive";
-            this.SourceCaseSensitive.Size = new System.Drawing.Size(93, 18);
+            this.SourceCaseSensitive.Size = new System.Drawing.Size(106, 19);
             this.SourceCaseSensitive.TabIndex = 0;
             this.SourceCaseSensitive.Text = "Case Sensitive";
             this.SourceCaseSensitive.UseVisualStyleBackColor = true;
@@ -168,7 +170,7 @@
             this.TargetNoWhitespaceTrimming.AutoSize = true;
             this.TargetNoWhitespaceTrimming.Location = new System.Drawing.Point(5, 131);
             this.TargetNoWhitespaceTrimming.Name = "TargetNoWhitespaceTrimming";
-            this.TargetNoWhitespaceTrimming.Size = new System.Drawing.Size(144, 18);
+            this.TargetNoWhitespaceTrimming.Size = new System.Drawing.Size(165, 19);
             this.TargetNoWhitespaceTrimming.TabIndex = 0;
             this.TargetNoWhitespaceTrimming.Text = "No Whitespace Trimming";
             this.TargetNoWhitespaceTrimming.UseVisualStyleBackColor = true;
@@ -178,7 +180,7 @@
             this.TargetNormalizeNativeChars.AutoSize = true;
             this.TargetNormalizeNativeChars.Location = new System.Drawing.Point(5, 106);
             this.TargetNormalizeNativeChars.Name = "TargetNormalizeNativeChars";
-            this.TargetNormalizeNativeChars.Size = new System.Drawing.Size(159, 18);
+            this.TargetNormalizeNativeChars.Size = new System.Drawing.Size(182, 19);
             this.TargetNormalizeNativeChars.TabIndex = 0;
             this.TargetNormalizeNativeChars.Text = "Normalize Native Characters";
             this.TargetNormalizeNativeChars.UseVisualStyleBackColor = true;
@@ -188,7 +190,7 @@
             this.TargetNormalizeWhitespaces.AutoSize = true;
             this.TargetNormalizeWhitespaces.Location = new System.Drawing.Point(5, 81);
             this.TargetNormalizeWhitespaces.Name = "TargetNormalizeWhitespaces";
-            this.TargetNormalizeWhitespaces.Size = new System.Drawing.Size(136, 18);
+            this.TargetNormalizeWhitespaces.Size = new System.Drawing.Size(156, 19);
             this.TargetNormalizeWhitespaces.TabIndex = 0;
             this.TargetNormalizeWhitespaces.Text = "Normalize Whitespaces";
             this.TargetNormalizeWhitespaces.UseVisualStyleBackColor = true;
@@ -198,7 +200,7 @@
             this.TargetMatchWholeWord.AutoSize = true;
             this.TargetMatchWholeWord.Location = new System.Drawing.Point(5, 55);
             this.TargetMatchWholeWord.Name = "TargetMatchWholeWord";
-            this.TargetMatchWholeWord.Size = new System.Drawing.Size(114, 18);
+            this.TargetMatchWholeWord.Size = new System.Drawing.Size(130, 19);
             this.TargetMatchWholeWord.TabIndex = 0;
             this.TargetMatchWholeWord.Text = "Match Whole Word";
             this.TargetMatchWholeWord.UseVisualStyleBackColor = true;
@@ -208,7 +210,7 @@
             this.TargetCaseSensitive.AutoSize = true;
             this.TargetCaseSensitive.Location = new System.Drawing.Point(6, 30);
             this.TargetCaseSensitive.Name = "TargetCaseSensitive";
-            this.TargetCaseSensitive.Size = new System.Drawing.Size(93, 18);
+            this.TargetCaseSensitive.Size = new System.Drawing.Size(106, 19);
             this.TargetCaseSensitive.TabIndex = 0;
             this.TargetCaseSensitive.Text = "Case Sensitive";
             this.TargetCaseSensitive.UseVisualStyleBackColor = true;
@@ -247,7 +249,7 @@
             // 
             this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.CancelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.CancelButton.Location = new System.Drawing.Point(626, 273);
+            this.CancelButton.Location = new System.Drawing.Point(629, 335);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(94, 26);
             this.CancelButton.TabIndex = 8;
@@ -259,7 +261,7 @@
             // 
             this.ConvertButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.ConvertButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.ConvertButton.Location = new System.Drawing.Point(527, 273);
+            this.ConvertButton.Location = new System.Drawing.Point(530, 335);
             this.ConvertButton.Name = "ConvertButton";
             this.ConvertButton.Size = new System.Drawing.Size(94, 26);
             this.ConvertButton.TabIndex = 8;
@@ -267,12 +269,35 @@
             this.ConvertButton.UseVisualStyleBackColor = true;
             this.ConvertButton.Click += new System.EventHandler(this.ConvertButton_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(351, 250);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(84, 15);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Search mode:";
+            // 
+            // SearchModeCombobox
+            // 
+            this.SearchModeCombobox.FormattingEnabled = true;
+            this.SearchModeCombobox.Items.AddRange(new object[] {
+            "Simple",
+            "Regular Expressions"});
+            this.SearchModeCombobox.Location = new System.Drawing.Point(441, 247);
+            this.SearchModeCombobox.Name = "SearchModeCombobox";
+            this.SearchModeCombobox.Size = new System.Drawing.Size(173, 23);
+            this.SearchModeCombobox.TabIndex = 10;
+            this.SearchModeCombobox.SelectedIndexChanged += new System.EventHandler(this.SearchModeCombobox_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AcceptButton = this.ConvertButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(739, 318);
+            this.ClientSize = new System.Drawing.Size(739, 373);
+            this.Controls.Add(this.SearchModeCombobox);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.ConvertButton);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.CategoryTextBox);
@@ -290,6 +315,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Key Terms to Checklist Converter ";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.SourceTermOptionsGroupBox.ResumeLayout(false);
             this.SourceTermOptionsGroupBox.PerformLayout();
             this.TargetTermOptions.ResumeLayout(false);
@@ -319,8 +345,10 @@
         private System.Windows.Forms.CheckBox KTMismatchCheckbox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox CategoryTextBox;
-        private System.Windows.Forms.Button CancelButton;
+        private new System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.Button ConvertButton;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox SearchModeCombobox;
     }
 }
 

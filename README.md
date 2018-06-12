@@ -29,5 +29,5 @@ The application supports multiple source and target terms. Enter the term at the
 ```
 | term1 | term2 | term3
 ```
-Insert a vertical bar (|) as the first character and then insert space + vertical bar + space between terms.
+Insert a vertical bar (|) as the first character followed by a space. Then insert space + vertical bar + space between terms.
 

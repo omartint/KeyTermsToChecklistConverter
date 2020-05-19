@@ -20,7 +20,7 @@ If your input file is an Excel, save the file as Unicode text file. It must cont
 1. Key terms file. The **Key Terms Mismatch Mode** check box must be enabled. When running QA in Xbench, checklist items will display those segments that contain a source term which has not been translated properly.
 2. Checking that a source term has been translated in a specific way. Disable the **Key Terms Mismatch Mode** check box. For instance, you want to check that "file" has been translated as "fichero" but should be "archivo".
 3. Search for source terms. If you want to find segments with a specific source term. The input file should only contain the source term and leave the target term empty.
-4. Search for target terms. If you want to find segments with a specific source term. The input file should only contain the target term and leave the source term empty. In fact, this can be useful to locate incorrect words that been introduced but are not detected as misspelling when checking spelling. For instance, you may type "loca" instead of "local".
+4. Search for target terms. If you want to find segments with a specific source term. The input file should only contain the target term and leave the source term empty. In fact, this can be useful to locate incorrect wordss that been introduced but are not detected as misspelling when checking spelling. For instance, you may type "loca" instead of "local".
 
 In cases 3 and 4, if the application detects that only the source or target term column contains text, it will create the checklist entry correctly. It does not matter whether the **Key Terms Mismatch Mode** is enabled or not.
 
